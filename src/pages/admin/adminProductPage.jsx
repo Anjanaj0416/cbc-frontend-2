@@ -1,117 +1,92 @@
-import axios, { Axios } from "axios"
-import { useEffect, useState } from "react"
-export default function AdminProductPage(){
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FaTrash, FaPencilAlt, FaPlus } from "react-icons/fa";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
-    const [products, setProducts]= useState([
-        {
-            "_id": "67ab580481f9dddc681f201f",
-            "productId": "BP001",
-            "productName": "Hydrating Face Serum",
-            "altNames": [
-                "Moisture Boost Serum",
-                "Glow Essence"
-            ],
-            "images": [
-                "https://example.com/images/hydrating-serum-1.jpg",
-                "https://example.com/images/hydrating-serum-2.jpg"
-            ],
-            "price": 29.99,
-            "lastPrice": 35.99,
-            "description": "A lightweight, fast-absorbing serum that hydrates and plumps the skin with hyaluronic acid and vitamin C.",
-            "__v": 0
-        },
-        {
-            "_id": "67adbd38bde4f7e2ebd23ae1",
-            "productId": "BP002",
-            "productName": "Matte Liquid Lipstick",
-            "altNames": [
-                "Velvet Lip Paint",
-                "Long-Wear Lip Color"
-            ],
-            "images": [
-                "https://example.com/images/matte-lipstick-1.jpg",
-                "https://example.com/images/matte-lipstick-2.jpg"
-            ],
-            "price": 14.99,
-            "lastPrice": 18.99,
-            "description": "A richly pigmented, long-wear liquid lipstick with a smooth matte finish that stays comfortable all day.",
-            "__v": 0
-        },
-        {
-            "_id": "67adbd5fbde4f7e2ebd23ae3",
-            "productId": "BP003",
-            "productName": "Revitalizing Night Cream",
-            "altNames": [
-                "Overnight Repair Cream",
-                "Deep Hydration Cream"
-            ],
-            "images": [
-                "https://example.com/images/night-cream-1.jpg",
-                "https://example.com/images/night-cream-2.jpg"
-            ],
-            "price": 39.99,
-            "lastPrice": 45.99,
-            "description": "An intensive overnight cream that nourishes and restores skin elasticity while you sleep, enriched with peptides and collagen.",
-            "__v": 0
-        },
-        {
-            "_id": "67adbe17bde4f7e2ebd23ae5",
-            "productId": "BP004",
-            "productName": "Brightening Vitamin C Serum",
-            "altNames": [
-                "Glow Boost Serum",
-                "Radiance Serum"
-            ],
-            "images": [
-                "https://example.com/images/vitamin-c-serum-1.jpg",
-                "https://example.com/images/vitamin-c-serum-2.jpg"
-            ],
-            "price": 29.99,
-            "lastPrice": 34.99,
-            "description": "A powerful antioxidant serum with Vitamin C that brightens skin, evens tone, and reduces signs of aging.",
-            "__v": 0
-        }
-    ])
+export default function AdminProductPage() {
+  const [products, setProducts] = useState([]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
+  
 
-    useEffect(
-        ()=>{
-            axios.get("http://localhost:5000/api/products").then
-            ((res)=>{
-                console.log(res.data)
-                setProducts(res.data)
-            })
-        },[]
-    )
+  useEffect(() => {
+    if (!productsLoaded) {
+      axios.get(import.meta.env.VITE_BACKEND_URL+ "/api/products").then((res) => {
+        console.log(res.data);
+        setProducts(res.data);
+        setProductsLoaded(true);
+      });
+      
+    }
+  }, [productsLoaded]);
 
+  const navigate = useNavigate();
 
-
-    return(
-        <div>
-            <h1>Admin Product Page</h1>
-            <table>
-                <thead>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Last Price</th>
-                    <th>Description</th>
-                </thead>
-                <tbody>
-                    {products.map((product, index)=>{
-                        return<tr key= {index}>
-                        <td>{product.productId}</td>
-                        <td>{product.productName}</td>
-                        <td>{product.price}</td>
-                        <td>{product.lastPrice}</td>
-                        <td>{product.description}</td>
-                      
-                        </tr>
-                    })}
-                </tbody>
-            </table>
-            
-        </div>
-    )
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen relative">
+        <Link to = "/admin/products/addProduct"className= "absolute right-[25px] bottom-[25px] text-[25px] border-[#3b82fb] text-blue-600 border-[2px] p-5 rounded-xl hover:rounded-full"><FaPlus/></Link>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Admin Product Page</h1>
+      <h1>{
+        productsLoaded ?
+        <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-gray-800 text-white">
+            <tr>
+              <th className="py-3 px-5 text-left">Product ID</th>
+              <th className="py-3 px-5 text-left">Product Name</th>
+              <th className="py-3 px-5 text-left">Price</th>
+              <th className="py-3 px-5 text-left">Last Price</th>
+              <th className="py-3 px-5 text-left">Description</th>
+              <th className="py-3 px-5 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={index} className="border-b hover:bg-gray-100">
+                <td className="py-3 px-5">{product.productId}</td>
+                <td className="py-3 px-5 font-medium text-gray-700">{product.productName}</td>
+                <td className="py-3 px-5 text-green-600 font-semibold">${product.price}</td>
+                <td className="py-3 px-5 text-red-500 line-through">${product.lastPrice}</td>
+                <td className="py-3 px-5 text-gray-600">{product.description}</td>
+                <td className="py-3 px-5 flex justify-center gap-4">
+                  <button className="text-red-600 hover:text-red-800 transition" title="Delete"
+                  onClick ={()=>{
+                    alert(product.productId)
+                    const token = localStorage.getItem("token")
+                    
+                    axios.delete(`http://localhost:5000/api/products/${product.productId}`,{
+                      headers : {
+                        Authorization : "Bearer " + token,
+                      },
+                    }).then((res)=>{
+                      console.log(res.data)
+                      toast.success("product deleted suceesfully")
+                      setProductsLoaded()
+                    });
+                  }}
+                  >
+                    <FaTrash size={18} />
+                  </button>
+                  <button className="text-blue-600 hover:text-blue-800 transition" 
+                  title="Edit"
+                  onClick={()=>{
+                    navigate("/admin/products/editProduct", {state :{ product: product}})  ;
+                  }}
+                  >
+                    <FaPencilAlt size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>:
+        <div className="w-full h-full flex justify-center items-center>"><div className="w-[60px] h-[60px] border-[4px] border-grey-200 border-b-[#3b82fb] animate-spin rounded-full"></div></div>
+      }
+      </h1>
+      
+      </div>
+  );
 }
 
 

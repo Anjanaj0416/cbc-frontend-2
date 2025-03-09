@@ -1,6 +1,11 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { MdDashboard, MdOutlineProductionQuantityLimits, MdShoppingCart, MdPeople } from "react-icons/md";
 import AdminProductPage from "./admin/adminProductPage";
+import AddProductForm from "./admin/addProductForm";
+import EditProductForm from "./admin/editProductFrom";
+
+
+
 
 export default function AdminHomePage() {
   return (
@@ -30,10 +35,13 @@ export default function AdminHomePage() {
 
 
       
-      <div className="bg-red-600 w-4/5 h-screen">
+      <div className=" w-4/5 h-screen ">
         <Routes>
            <Route path= "/dashboard" element= {<h1>Dashboard</h1>}/>
            <Route path= "/products" element= {<AdminProductPage/>}/>
+           <Route path= "/products/addProduct" element= {<AddProductForm/>}/>
+           <Route path="/products/editProduct" element={<EditProductForm/>} />
+
            <Route path= "/orders" element= {<h1>Orders</h1>}/>
            <Route path= "/customers" element= {<h1>Customers</h1>}/> 
         </Routes>

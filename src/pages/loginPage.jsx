@@ -24,7 +24,7 @@ export default function LoginPage(){
   const[password, setPassword]= useState ("");
 
   function login(){
-    axios.post("http://localhost:5000/api/users/login",{
+    axios.post(import.meta.env.VITE_BACKEND_URL+"/api/users/login",{
       email : email,
       password : password
     }).then((res)=>{ 
@@ -35,8 +35,8 @@ export default function LoginPage(){
         return
       }
       toast.success("login Success");
-
-      localStorage.setItem("token",res.data.token);
+      localStorage.setItem("token", res.data.Token); // Changed from token to Token
+     
       
       setTimeout(() => {
         if(res.data.user.type == "admin"){
