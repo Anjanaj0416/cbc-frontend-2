@@ -9,6 +9,7 @@ export default function Header(){
                 <Link to="/" className=" font-bold text-xl   hover:border-b border-b-black ">Home</Link>
                 <Link to="/products" className=" font-bold text-xl   hover:border-b border-b-black">Products</Link>
                 <Link to="/about" className=" font-bold text-xl  hover:border-b border-b-black">About Us</Link>
+                <Link to="/cart" className=" font-bold text-xl  hover:border-b border-b-black">Cart</Link>
 
 
             

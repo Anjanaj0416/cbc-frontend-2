@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../notFound";
 import ImageSlider from "../../components/imageSlider";
+import toast from "react-hot-toast";
+import { addToCart } from "../../utils/cartFunction";
 
 
 
@@ -11,6 +13,7 @@ import ImageSlider from "../../components/imageSlider";
 export default function ProductOverView() {
 
     const params = useParams();
+    const navigate = useNavigate();
     const productId = params.id;
     const[product, setProduct] = useState({})
     const [states, setStates] = useState("Loading");
@@ -32,6 +35,13 @@ export default function ProductOverView() {
           
         });
     }, []);
+
+    function onAddToCartClick(){
+      addToCart(product.productId,1);
+      toast.success(product.productId+"Added to cart");
+      navigate("/cart")
+    }
+
 
     return (
       <div className="w-full h-[calc(100vh-100px)] ">
@@ -64,6 +74,8 @@ export default function ProductOverView() {
 
                 
                 <p className="text-gray-600 text-lg">{product.description}</p>
+                <button onClick={onAddToCartClick} className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Add to cart</button>
+                
 
               </div>
 
