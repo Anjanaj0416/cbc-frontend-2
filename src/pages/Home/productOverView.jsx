@@ -61,14 +61,19 @@ export default function ProductOverView() {
         }
         {
           states == "found"&& 
-          <div className="w-full h-[calc(100vh-100px)] flex justify-center items-center">
-            <div className="w-[35%] h-full">
+          <div className="w-full h-full flex flex-col lg:flex-row justify-center items-center">
+            <h1 className="text-2xl font-bold  text-stone-900 lg:hidden ">{product.productName}</h1>
+            <p className="text-gray-600 text-lg lg:hidden">{(product.price> product.lastPrice)&&
+                <span className="text-gray-600 text-lg line-through">LKR.{product.price}</span>}
+                <span>{"LKR."+ product.lastPrice}</span></p>
+            <div className="w-[100%] lg:w-[35%] border-[3px] border-blue-900 lg:h-full">
+            
               <ImageSlider images={product.images}></ImageSlider>
               </div>
               <div className="w-[65%] h-full g-4">
-                <h1 className="text-2xl font-bold  text-stone-900">{product.productName}</h1>
+                <h1 className="text-2xl font-bold  text-stone-900 hidden lg:block">{product.productName}</h1>
                 <h1 className="text-2xl font-bold  text-stone-900">{product.altNames.join("|")}</h1>
-                <p className="text-gray-600 text-lg">{(product.price> product.lastPrice)&&
+                <p className="text-gray-600 text-lg hidden lg:block">{(product.price> product.lastPrice)&&
                 <span className="text-gray-600 text-lg line-through">LKR.{product.price}</span>}
                 <span>{"LKR."+ product.lastPrice}</span></p>
 

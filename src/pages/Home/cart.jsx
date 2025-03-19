@@ -18,7 +18,9 @@ export default function Cart(){
         ((res) =>{
             setTotal(res.data.total)
             console.log(res.data)
-            setLabelTotal(res.data.labelTotal)
+            if(res.data.total != null){
+                setTotal(res.data.total);
+                setLabelTotal(res.data.total);}
 
         }
 

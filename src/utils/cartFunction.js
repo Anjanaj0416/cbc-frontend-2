@@ -49,7 +49,8 @@ export function deleteItem(productId){
         (item) => {return item.productId == productId}
     )
     if(index != -1){
-        cart.splice(index,1);
+        const newCart = cart.splice(index,1);
+        saveCart(newCart);
     }
     saveCart(cart);
 }
